@@ -62,11 +62,25 @@ class RegisterController extends Controller
      * @return \App\User
      */
     protected function create(array $data)
+
     {
+        //nome do arquiv
+        $nomeArquivo = $data['img']->getClientOriginalName();
+        //pego a data do sistema
+        $dataAtual = date('y-m-d');
+        //altero o nome do arquivo
+        $nomeArquivo = $dataAtual.$nomeArquivo;
+        //gero o link para meu usuario ter acesso
+        $caminhoImg = "storage/profile/$nomeArquivo";
+        //salvo a imagem dentro do storage
+        
+        $resultado = $data['img']->storeAs('public/profile',$nomeArquivo);
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'img_profile' => $caminhoImg,
+            'active' => 1
         ]);
     }
 }
