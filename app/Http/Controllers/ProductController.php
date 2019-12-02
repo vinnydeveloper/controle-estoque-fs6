@@ -23,25 +23,57 @@ class ProductController extends Controller {
 
       $result = $newProduct->save();
 
-      return view('products.form', ["result"=>$result]);
+      return view('products.formRegister', ["result"=>$result]);
     }
 
     public function viewForm(Request $request){
-        return view('products.form');
+        return view('products.formRegister');
+    }
+
+    public function viewFormUpdate(Request $request, $id=0){
+   
+        $product = Product::find($id);
+        if($product){
+            return view('products.formUpdate',["product"=>$product]);  
+        }else {
+            return view('products.formUpdate');
+        }      
     }
 
     public function update(Request $request){
         //Para atualizar devemos buscar um objeto ao invez de criar,
         // usando Product::find($idProduto)
         //Vai ser necessario usar rotas com parametro     
+
+
+      $product = Product::find($request->idProduct);
+      $product->name = $request->nameProduct;
+      $product->description = $request->descriptionProduct;
+      $product->quantity = $request->quantityProduct;
+      $product->price = $request->priceProduct;
+
+      $result = $product->save();
+
+      return view('products.formUpdate', ["result"=>$result]);
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request, $id=0){
         // para deletar vc vai usar Product::destroy($id)
+       $result =  Product::destroy($id);
+
+       
+
+       if($result){
+           return redirect('/produtos');
+       }
     }
 
     public function viewAllProducts(Request $request){
         // vai precisar do Product::All()
+
+        $listProducts = Product::all();
+
+        return view('products.products', ['listProducts'=>$listProducts]);
     }
 
     public function viewOneProduct(Request $request){
