@@ -23,7 +23,7 @@ class ProductController extends Controller {
 
       $result = $newProduct->save();
 
-        return view('products.form', ["result"=>$result]);
+      return view('products.form', ["result"=>$result]);
     }
 
     public function viewForm(Request $request){
